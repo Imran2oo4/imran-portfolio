@@ -1,476 +1,1173 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Finance Dashboard</title>
-  <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.23.2/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'netflix-red': '#E50914',
-            'netflix-off-white': '#F5F5F1',
-          },
-        },
-      },
-    };
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Imran - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --accent: #e74c3c;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSI2MCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgZmlsbD0idXJsKCNwYXR0ZXJuKSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIvPjwvc3ZnPg==');
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            animation: fadeIn 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            display: inline-block;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .skill:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--primary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .timeline-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .timeline-content p {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .project-info p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-tag {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .project-links a:hover {
+            color: var(--secondary);
+        }
+
+        .experience-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .experience-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .experience-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .experience-header h3 {
+            color: var(--secondary);
+        }
+
+        .experience-date {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .experience-company {
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background-color: var(--secondary);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .contact-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-item i {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 992px) {
+
+            .about-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .about-img {
+                order: -1;
+                text-align: center;
+            }
+
+            .timeline::before {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 21px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transition: var(--transition);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 {
+            margin-top: 1rem;
+        }
+
+        .mt-2 {
+            margin-top: 2rem;
+        }
+
+        .mt-3 {
+            margin-top: 3rem;
+        }
+
+        .mb-1 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 3rem;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+
+        body.dark-mode nav {
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .nav-links a {
+            color: #f1f1f1;
+        }
+
+        body.dark-mode .timeline-content,
+        body.dark-mode .project-card,
+        body.dark-mode .experience-item,
+        body.dark-mode .contact-form {
+            background-color: #1e1e1e;
+            color: #f1f1f1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .project-info h3,
+        body.dark-mode .experience-header h3 {
+            color: #f1f1f1;
+        }
+
+        body.dark-mode .project-info p,
+        body.dark-mode .experience-company {
+            color: #aaa;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea {
+            background-color: #2d2d2d;
+            border-color: #444;
+            color: #f1f1f1;
+        }
+
+        body.dark-mode .form-group input:focus,
+        body.dark-mode .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+    </style>
 </head>
+
 <body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
-
-    const App = () => {
-      const [expenses, setExpenses] = useState([]);
-      const [incomes, setIncomes] = useState([]);
-      const [expenseDescription, setExpenseDescription] = useState('');
-      const [expenseAmount, setExpenseAmount] = useState('');
-      const [category, setCategory] = useState('Food');
-      const [incomeDescription, setIncomeDescription] = useState('');
-      const [incomeAmount, setIncomeAmount] = useState('');
-      const [incomeDate, setIncomeDate] = useState('');
-      const [editingIncome, setEditingIncome] = useState(null);
-      const [editIncomeDescription, setEditIncomeDescription] = useState('');
-      const [editIncomeAmount, setEditIncomeAmount] = useState('');
-      const [editIncomeDate, setEditIncomeDate] = useState('');
-      const [savingsGoal, setSavingsGoal] = useState(0);
-      const [savingsGoalInput, setSavingsGoalInput] = useState('');
-      const chartRef = useRef(null);
-
-      // Load data from localStorage on mount
-      useEffect(() => {
-        const savedExpenses = JSON.parse(localStorage.getItem('expenses')) || [];
-        const savedIncomes = JSON.parse(localStorage.getItem('incomes')) || [];
-        const savedSavingsGoal = JSON.parse(localStorage.getItem('savingsGoal')) || 0;
-        setExpenses(savedExpenses);
-        setIncomes(savedIncomes);
-        setSavingsGoal(savedSavingsGoal);
-      }, []);
-
-      // Save data to localStorage
-      useEffect(() => {
-        localStorage.setItem('expenses', JSON.stringify(expenses));
-        localStorage.setItem('incomes', JSON.stringify(incomes));
-        localStorage.setItem('savingsGoal', JSON.stringify(savingsGoal));
-      }, [expenses, incomes, savingsGoal]);
-
-      // Handle adding a new expense
-      const addExpense = () => {
-        if (expenseDescription && expenseAmount && !isNaN(expenseAmount) && expenseAmount > 0) {
-          const newExpense = {
-            id: Date.now(),
-            description: expenseDescription,
-            amount: parseFloat(expenseAmount),
-            category,
-          };
-          setExpenses([...expenses, newExpense]);
-          setExpenseDescription('');
-          setExpenseAmount('');
-        } else {
-          alert('Please enter a valid expense description and amount.');
-        }
-      };
-
-      // Handle adding a new income
-      const addIncome = () => {
-        if (incomeDescription && incomeAmount && !isNaN(incomeAmount) && incomeAmount > 0 && incomeDate) {
-          const newIncome = {
-            id: Date.now(),
-            description: incomeDescription,
-            amount: parseFloat(incomeAmount),
-            date: incomeDate,
-          };
-          setIncomes([...incomes, newIncome]);
-          setIncomeDescription('');
-          setIncomeAmount('');
-          setIncomeDate('');
-        } else {
-          alert('Please enter a valid income description, amount, and date.');
-        }
-      };
-
-      // Handle editing an income
-      const startEditingIncome = (income) => {
-        setEditingIncome(income);
-        setEditIncomeDescription(income.description);
-        setEditIncomeAmount(income.amount);
-        setEditIncomeDate(income.date);
-      };
-
-      const saveIncomeEdit = () => {
-        if (
-          editIncomeDescription &&
-          editIncomeAmount &&
-          !isNaN(editIncomeAmount) &&
-          editIncomeAmount > 0 &&
-          editIncomeDate
-        ) {
-          setIncomes(
-            incomes.map(inc =>
-              inc.id === editingIncome.id
-                ? {
-                    ...inc,
-                    description: editIncomeDescription,
-                    amount: parseFloat(editIncomeAmount),
-                    date: editIncomeDate,
-                  }
-                : inc
-            )
-          );
-          setEditingIncome(null);
-          setEditIncomeDescription('');
-          setEditIncomeAmount('');
-          setEditIncomeDate('');
-        } else {
-          alert('Please enter a valid description, amount, and date.');
-        }
-      };
-
-      const cancelEdit = () => {
-        setEditingIncome(null);
-        setEditIncomeDescription('');
-        setEditIncomeAmount('');
-        setEditIncomeDate('');
-      };
-
-      // Handle deleting an income
-      const deleteIncome = (id) => {
-        setIncomes(incomes.filter(inc => inc.id !== id));
-      };
-
-      // Handle deleting an expense
-      const deleteExpense = (id) => {
-        setExpenses(expenses.filter(exp => exp.id !== id));
-      };
-
-      // Handle setting savings goal
-      const setSavingsGoalHandler = () => {
-        if (savingsGoalInput && !isNaN(savingsGoalInput) && savingsGoalInput > 0) {
-          setSavingsGoal(parseFloat(savingsGoalInput));
-          setSavingsGoalInput('');
-        } else {
-          alert('Please enter a valid savings goal amount.');
-        }
-      };
-
-      // Calculate totals
-      const totalIncome = incomes.reduce((sum, inc) => sum + inc.amount, 0);
-      const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-      const balance = totalIncome - totalExpenses;
-      const totalSavings = expenses
-        .filter(exp => exp.category === 'Savings')
-        .reduce((sum, exp) => sum + exp.amount, 0);
-      const progressPercentage = savingsGoal > 0 ? Math.min((totalSavings / savingsGoal) * 100, 100) : 0;
-
-      // Calculate data for the chart
-      const getChartData = () => {
-        const categories = ['Food', 'Rent', 'Health', 'Groceries', 'Education', 'Entertainment', 'Others', 'Savings'];
-        const data = categories.map(cat =>
-          expenses
-            .filter(exp => exp.category === cat)
-            .reduce((sum, exp) => sum + exp.amount, 0)
-        );
-        if (balance > 0) {
-          data.push(balance);
-        }
-        return data;
-      };
-
-      // Get chart labels
-      const getChartLabels = () => {
-        const categories = ['Food', 'Rent', 'Health', 'Groceries', 'Education', 'Entertainment', 'Others', 'Savings'];
-        return balance > 0 ? [...categories, 'Balance'] : categories;
-      };
-
-      // Render chart
-      useEffect(() => {
-        const ctx = document.getElementById('spendingChart')?.getContext('2d');
-        if (ctx) {
-          if (chartRef.current) {
-            chartRef.current.destroy();
-          }
-          
-          chartRef.current = new Chart(ctx, {
-            type: 'pie',
-            data: {
-              labels: getChartLabels(),
-              datasets: [{
-                data: getChartData(),
-                backgroundColor: [
-                  '#FF6384', // Food
-                  '#36A2EB', // Rent
-                  '#FFCE56', // Health
-                  '#4BC0C0', // Groceries
-                  '#9966FF', // Education
-                  '#FF9F40', // Entertainment
-                  '#C9CBCF', // Others
-                  '#00CED1', // Savings
-                  '#00FF00', // Balance
-                ],
-                borderColor: ['#fff'],
-                borderWidth: 1,
-              }],
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: 'Financial Overview (Expenses and Balance)' },
-              },
-            },
-          });
-        }
-
-        return () => {
-          if (chartRef.current) {
-            chartRef.current.destroy();
-            chartRef.current = null;
-          }
-        };
-      }, [expenses, incomes]);
-
-      return (
-        <div className="min-h-screen bg-netflix-red p-4">
-          <h1 className="text-3xl font-bold text-center mb-6 text-black">PERSONAL FINANCE DASHBOARD</h1>
-          
-          {/* Financial Summary */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Financial Summary</h2>
-            <div className="space-y-2">
-              <p className="text-gray-600">Total Income: <span className="font-bold">₹{totalIncome.toFixed(2)}</span></p>
-              <p className="text-gray-600">Total Expenses (Including Savings): <span className="font-bold">₹{totalExpenses.toFixed(2)}</span></p>
-              <p className={`text-gray-600 ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                Balance: <span className="font-bold">₹{balance.toFixed(2)}</span>
-              </p>
+    <header>
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <img src="https://ui-avatars.com/api/?name=Mohamed+Imran&background=random&size=150&rounded=true&color=fff"
+                alt="Mohamed Imran" class="profile-img">
+            <h1>MOHAMED IMRAN</h1>
+            <p class="tagline">Software Development Engineer</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/imran1124" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Imran2oo4" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="mailto:mdimran4511a@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="tel:+91 6384301911"><i class="fas fa-phone"></i></a>
             </div>
-          </div>
-
-          {/* Savings Goal Tracker */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Savings Goal Tracker</h2>
-            <div className="space-y-4">
-              <div className="flex space-x-2">
-                <input
-                  type="number"
-                  placeholder="Set Savings Goal (e.g., 50000 ₹)"
-                  value={savingsGoalInput}
-                  onChange={(e) => setSavingsGoalInput(e.target.value)}
-                  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-                <button
-                  onClick={setSavingsGoalHandler}
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-                >
-                  Set Goal
-                </button>
-              </div>
-              {savingsGoal > 0 ? (
-                <div>
-                  <p className="text-gray-600 mb-2">
-                    Progress: ₹{totalSavings.toFixed(2)} / ₹{savingsGoal.toFixed(2)} ({progressPercentage.toFixed(2)}%)
-                  </p>
-                  <div className="w-full bg-gray-200 rounded-full h-4">
-                    <div
-                      className="bg-green-500 h-4 rounded-full"
-                      style={{ width: `${progressPercentage}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-gray-500">Set a savings goal to track progress.</p>
-              )}
-            </div>
-          </div>
-
-          {/* Income Form */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Add Income</h2>
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Description (e.g., Salary)"
-                value={incomeDescription}
-                onChange={(e) => setIncomeDescription(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <input
-                type="number"
-                placeholder="Amount (e.g., 2000 ₹)"
-                value={incomeAmount}
-                onChange={(e) => setIncomeAmount(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <input
-                type="date"
-                value={incomeDate}
-                onChange={(e) => setIncomeDate(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <button
-                onClick={addIncome}
-                className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition"
-              >
-                Add Income
-              </button>
-            </div>
-          </div>
-
-          {/* Edit Income Modal */}
-          {editingIncome && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-netflix-off-white p-6 rounded-lg shadow-md max-w-md w-full">
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">Edit Income</h2>
-                <div className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Description"
-                    value={editIncomeDescription}
-                    onChange={(e) => setEditIncomeDescription(e.target.value)}
-                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Amount (e.g., 2000 ₹)"
-                    value={editIncomeAmount}
-                    onChange={(e) => setEditIncomeAmount(e.target.value)}
-                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  />
-                  <input
-                    type="date"
-                    value={editIncomeDate}
-                    onChange={(e) => setEditIncomeDate(e.target.value)}
-                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  />
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={saveIncomeEdit}
-                      className="w-full bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600 transition"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={cancelEdit}
-                      className="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Income List */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Income</h2>
-            {incomes.length === 0 ? (
-              <p className="text-gray-500">No income added yet.</p>
-            ) : (
-              <ul className="space-y-2">
-                {incomes.map(inc => (
-                  <li key={inc.id} className="flex justify-between items-center p-2 border-b text-gray-600">
-                    <span>{inc.description} ({inc.date}) - ₹{inc.amount.toFixed(2)}</span>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => startEditingIncome(inc)}
-                        className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 transition"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => deleteIncome(inc.id)}
-                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition"
-                      >
-                        X
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Expense Form */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Add Expense</h2>
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Description (e.g., Coffee)"
-                value={expenseDescription}
-                onChange={(e) => setExpenseDescription(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="number"
-                placeholder="Amount (e.g., 500 ₹)"
-                value={expenseAmount}
-                onChange={(e) => setExpenseAmount(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="Food">Food</option>
-                <option value="Rent">Rent</option>
-                <option value="Health">Health</option>
-                <option value="Groceries">Groceries</option>
-                <option value="Education">Education</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Others">Others</option>
-                <option value="Savings">Savings</option>
-              </select>
-              <button
-                onClick={addExpense}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-              >
-                Add Expense
-              </button>
-            </div>
-          </div>
-
-          {/* Expense List */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">Expenses</h2>
-            {expenses.length === 0 ? (
-              <p className="text-gray-500">No expenses added yet.</p>
-            ) : (
-              <ul className="space-y-2">
-                {expenses.map(exp => (
-                  <li key={exp.id} className="flex justify-between items-center p-2 border-b text-gray-600">
-                    <span>{exp.description} ({exp.category}) - ₹{exp.amount.toFixed(2)}</span>
-                    <button
-                      onClick={() => deleteExpense(exp.id)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition"
-                    >
-                      Delete
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Chart */}
-          <div className="max-w-md mx-auto bg-netflix-off-white p-6 rounded-lg shadow-md">
-            <canvas id="spendingChart" width="400" height="400"></canvas>
-          </div>
         </div>
-      );
-    };
-
-    // Render the app
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
+    </header>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Mohamed Imran</div>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#about" class="active">About</a>
+                <a href="#education">Education</a>
+                <a href="#projects">Projects</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <section id="about">
+        <div class="section-title">
+            <h2>About Me</h2>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Electronics and Communication Engineering student with a strong passion for Software development and
+                    solid foundation in programming. Experienced in integrating hardware with software to develop
+                    innovative, real-time applications.</p>
+                <p> Continuously driven to expand technical expertise in cutting - edge areas such as Machine Learning,
+                    AI, NLP, Full-stack development and IoT based systems. Actively seeking for internships or job
+                    opportunities to apply my academic knowledge in practical, real-world projects.</p>
+                <h3>Technical Skills</h3>
+                <div class="skills">
+                    <span class="skill">Python</span>
+                    <span class="skill">Java</span><span class="skill">C</span>
+                    <span class="skill">JavaScript</span>
+                    <span class="skill">HTML</span>
+                    <span class="skill">CSS</span>
+                    <span class="skill">Bootstrap</span>
+                    <span class="skill">Taillwind CSS</span>
+                    <span class="skill">React</span>
+                    <span class="skill">Angular</span>
+                    <span class="skill">UI/UX</span>
+                    <span class="skill">Embedded Sysytems</span>
+                    <span class="skill">IoT design </span>
+                    <span class="skill">Sensor Integration</span>
+                </div>
+                <h3 class="mt-2">Soft Skills</h3>
+                <div class="skills">
+                    <span class="skill">Problem solving</span>
+                    <span class="skill">Critical Thinking</span>
+                    <span class="skill">Leadership</span>
+                    <span class="skill">Teamwork</span>
+                    <span class="skill">Quick learner</span>
+                    <span class="skill">Active Listener</span>
+                    <span class="skill">Time Management</span>
+                </div>
+            </div>
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                    alt="Electronics Project"
+                    style="width: 100%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </section>
+    <section id="education">
+        <div class="section-title">
+            <h2>Education</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>B.E. Electronics and Communication Engineering</h3>
+                    <h4>Agni College of Technology, Chennai</h4>
+                    <p>August 2022 — Present</p>
+                    <p>CGPA: 7.0/10</p>
+                    <p>Relevant Coursework: Digital Electronics, Microprocessors, Embedded Systems, Signal Processing,
+                        Communication Systems</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Higher Secondary Certificate (HSC)</h3>
+                    <h4>A.K.T Academy Matric Higher Secondary School, Chennai</h4>
+                    <p>June 2021 — March 2022</p>
+                    <p>Percentage: 77%</p>
+                    <p>Stream: Science with Computer Science</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Secondary School Leaving Certificate (SSLC)</h3>
+                    <h4>A.K.T Academy Matric Higher Secondary School, Chennai</h4>
+                    <p>June 2019 — March 2020</p>
+                    <p>Percentage: 65%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="projects">
+        <div class="section-title">
+            <h2>Projects</h2>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                    alt="Air Quality Monitoring System" class="project-img">
+                <div class="project-info">
+                    <h3>Air Quality Monitoring System</h3>
+                    <p>Developed an IoT-based system using Arduino to monitor air quality parameters like PM2.5, CO2,
+                        and temperature, with real-time data logging and display on a web interface.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Arduino</span>
+                        <span class="project-tag">C++</span>
+                        <span class="project-tag">IoT</span>
+                        <span class="project-tag">Python</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#"><i class="fab fa-github"></i> Code</a>
+                        <a href="#"><i class="fas fa-external-link-alt"></i> Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                    alt="CNC Plotter" class="project-img">
+                <div class="project-info">
+                    <h3>CNC Plotter</h3>
+                    <p>Designed and programmed a CNC plotter using Arduino and stepper motors to draw vector graphics,
+                        controlled via a custom Python-based interface for G-code generation.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Arduino</span>
+                        <span class="project-tag">C++</span>
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Embedded Systems</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#"><i class="fab fa-github"></i> Code</a>
+                        <a href="#"><i class="fas fa-external-link-alt"></i> Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    <section id="experience">
+        <div class="section-title">
+            <h2>Experience & Workshops </h2>
+        </div>
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>Python Programming Intern</h3>
+                <span class="experience-date">( Mar 2024 )</span>
+            </div>
+            <p class="experience-company">SystemTron EduTech</p>
+            <p>Successfully completed a 1-month internship in python programming, gained hands-on experience in python.</p>
+            <p>Improved code efficiency and readability through best practices and modular designs.</p>
+        </div>
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>AI tools Workshop </h3>
+                <span class="experience-date">( June 2024 )</span>
+            </div>
+            <p class="experience-company">be10x</p>
+            <p>Attended hands-on session on popular AI tools gained insights into Prompt engineering, AI model deployment, Creative AI applications.</p>
+        </div>
+    </section>
+    <section id="contact">
+        <div class="section-title">
+            <h2>Contact Me</h2>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Chennai, India</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+91 6384301911</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>mdimran4511a@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <span>https://www.linkedin.com/in/imran1124</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <span>https://github.com/Imran2oo4</span>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 Mohamed Imran. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#about">About</a>
+                <a href="#education">Education</a>
+                <a href="#projects">Projects</a>
+                <a href="#experience">Experience</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+                navLinks.classList.remove('active');
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            console.log({ name, email, subject, message });
+            alert('Thank you for your message! I will get back to you soon.');
+            contactForm.reset();
+        });
+        const animateOnScroll = () => {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const projectCards = document.querySelectorAll('.project-card');
+            const experienceItems = document.querySelectorAll('.experience-item');
+            const isInViewport = (element) => {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.75
+                );
+            };
+            timelineItems.forEach((item, index) => {
+                if (isInViewport(item)) {
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, index * 200);
+                }
+            });
+            projectCards.forEach((card, index) => {
+                if (isInViewport(card)) {
+                    setTimeout(() => {
+                        card.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+            experienceItems.forEach((item, index) => {
+                if (isInViewport(item)) {
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        };
+        animateOnScroll();
+        window.addEventListener('scroll', animateOnScroll);
+    </script>
 </body>
 </html>
